@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - Bihar Skill Intern</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .payment-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .payment-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .payment-header::before {
+            content: '💳';
+            display: block;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .payment-header h1 {
+            font-size: 1.8em;
+            margin-bottom: 5px;
+        }
+
+        .payment-header p {
+            font-size: 0.95em;
+            opacity: 0.9;
+        }
+
+        .payment-body {
+            padding: 35px 25px;
+        }
+
+        /* Progress Bar */
+        .progress-step {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: #667eea;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .step.active .step-number {
+            background: #10b981;
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .step-line {
+            position: absolute;
+            top: 17px;
+            left: 50%;
+            width: 100%;
+            height: 2px;
+            background: #e0e0e0;
+            z-index: -1;
+        }
+
+        .step-label {
+            font-size: 0.8em;
+            color: #666;
+        }
+
+        /* Order Summary */
+        .order-summary {
+            background: linear-gradient(135deg, #f0f4ff 0%, #f8faff 100%);
+            padding: 22px;
+            border-radius: 12px;
+            margin-bottom: 28px;
+            border: 2px solid #e0e7ff;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 14px;
+            font-size: 0.95em;
+            color: #333;
+        }
+
+        .summary-item:last-child {
+            margin-bottom: 0;
+            padding-top: 14px;
+            border-top: 2px solid #d0d9ff;
+            font-weight: bold;
+            font-size: 1.15em;
+            color: #667eea;
+        }
+
+        /* User Info */
+        .user-info {
+            background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%);
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 5px solid #10b981;
+        }
+
+        .user-info-item {
+            font-size: 0.9em;
+            color: #333;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .user-info-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .user-info-label {
+            color: #059669;
+            font-weight: 700;
+        }
+
+        .user-icon {
+            font-size: 1.1em;
+        }
+
+        /* Payment Methods */
+        .payment-methods {
+            margin-bottom: 28px;
+        }
+
+        .methods-title {
+            font-size: 0.95em;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .methods-title::before {
+            content: '💰';
+            font-size: 1.1em;
+        }
+
+        .method-button {
+            width: 100%;
+            padding: 13px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.95em;
+            font-weight: 500;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .method-button:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+            transform: translateX(5px);
+        }
+
+        .method-button.active {
+            border-color: #667eea;
+            background: #f0f4ff;
+            color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+        }
+
+        .method-icon {
+            font-size: 1.6em;
+        }
+
+        /* PhonePe Button */
+        .phonepe-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #5f27cd 0%, #3d1099 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.05em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            box-shadow: 0 6px 20px rgba(95, 39, 205, 0.2);
+        }
+
+        .phonepe-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(95, 39, 205, 0.4);
+        }
+
+        .phonepe-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .phonepe-icon {
+            font-size: 1.4em;
+        }
+
+        /* Cancel Button */
+        .cancel-btn {
+            width: 100%;
+            padding: 12px;
+            background: #f3f4f6;
+            color: #333;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .cancel-btn:hover {
+            background: #e5e7eb;
+            border-color: #d1d5db;
+        }
+
+        /* Credit Card Form */
+        .card-form {
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 0.95em;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .security-icon {
+            color: #10b981;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 35px 30px;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-icon {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+        }
+
+        .modal-title {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .modal-message {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .modal-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 13px 35px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 0.95em;
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        @media (max-width: 480px) {
+            .payment-body {
+                padding: 25px 18px;
+            }
+
+            .payment-header {
+                padding: 35px 20px;
+            }
+
+            .payment-header h1 {
+                font-size: 1.5em;
+            }
+
+            .order-summary {
+                padding: 18px;
+            }
+
+            .progress-step {
+                margin-bottom: 25px;
+            }
+
+            /* Confirmation Details */
+            .confirmation-details {
+                background: #f9fafb;
+                padding: 22px;
+                border-radius: 12px;
+                margin-bottom: 25px;
+                border: 1px solid #e5e7eb;
+            }
+
+            .detail-row {
+                display: flex;
+                justify-content: space-between;
+                padding: 14px 0;
+                border-bottom: 1px solid #e5e7eb;
+                font-size: 0.95em;
+            }
+
+            .detail-row:last-child {
+                border-bottom: none;
+            }
+
+            .detail-row.amount-row {
+                padding-top: 14px;
+                border-top: 2px solid #e5e7eb;
+                font-weight: bold;
+                font-size: 1.1em;
+                color: #667eea;
+            }
+
+            .detail-label {
+                color: #666;
+                font-weight: 600;
+            }
+
+            .detail-value {
+                color: #333;
+                font-weight: 500;
+            }
+
+            .confirm-pay-btn {
+                width: 100%;
+                padding: 16px;
+                background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                color: white;
+                border: none;
+                border-radius: 10px;
+                font-size: 1.05em;
+                font-weight: 700;
+                cursor: pointer;
+                transition: all 0.3s;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                margin-bottom: 12px;
+                box-shadow: 0 6px 20px rgba(16, 185, 129, 0.2);
+            }
+
+            .confirm-pay-btn:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
+            }
+
+            .confirm-pay-btn:active {
+                transform: translateY(-1px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Payment Confirmation (Step 1) -->
+    <div class="payment-container" id="confirmationStep">
+        <div class="payment-header">
+            <h1>Payment Confirmation</h1>
+            <p>Verify Your Details</p>
+        </div>
+
+        <div class="payment-body">
+            <div class="confirmation-details">
+                <div class="detail-row">
+                    <span class="detail-label">Registration No.:</span>
+                    <span class="detail-value" id="regNo">REG-2026-0001</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Course:</span>
+                    <span class="detail-value" id="courseName">Skill Development</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Student Name:</span>
+                    <span class="detail-value" id="confStudentName">-</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Category:</span>
+                    <span class="detail-value">General</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Mobile No.:</span>
+                    <span class="detail-value" id="confMobileNo">-</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Email ID:</span>
+                    <span class="detail-value" id="confEmailId">-</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Order ID:</span>
+                    <span class="detail-value" id="orderId">-</span>
+                </div>
+                <div class="detail-row amount-row">
+                    <span class="detail-label">Fee Amount:</span>
+                    <span class="detail-value">₹100</span>
+                </div>
+            </div>
+
+            <button class="confirm-pay-btn" onclick="goBack()">
+                Edit Details
+            </button>
+
+            <button class="cancel-btn" onclick="proceedToPayment()">
+                ✓ Confirm & Pay
+            </button>
+
+            <div class="security-badge">
+                <span class="security-icon">🔒</span>
+                Secure Payment Gateway
+            </div>
+        </div>
+    </div>
+
+    <!-- Full Payment Page (Step 2) -->
+    <div class="payment-container" id="paymentStep" style="display: none;">
+        <div class="payment-header">
+            <h1>Payment Options</h1>
+            <p>Choose Your Payment Method</p>
+        </div>
+
+        <div class="payment-body">
+            <!-- Progress Steps -->
+            <div class="progress-step">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Confirm</div>
+                    <div class="step-line"></div>
+                </div>
+                <div class="step active">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Payment</div>
+                    <div class="step-line"></div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Complete</div>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="order-summary">
+                <div class="summary-item">
+                    <span>Registration Fee</span>
+                    <span>₹100</span>
+                </div>
+                <div class="summary-item">
+                    <span>Tax (0%)</span>
+                    <span>₹0.00</span>
+                </div>
+                <div class="summary-item">
+                    <span>Total Amount</span>
+                    <span>₹100</span>
+                </div>
+            </div>
+
+            <!-- User Info -->
+            <div class="user-info">
+                <div class="user-info-item">
+                    <span class="user-icon">👤</span>
+                    <span class="user-info-label">Name:</span> <span id="displayName">Student</span>
+                </div>
+                <div class="user-info-item">
+                    <span class="user-icon">📧</span>
+                    <span class="user-info-label">Email:</span> <span id="displayEmail">student@example.com</span>
+                </div>
+            </div>
+
+            <!-- Payment Methods -->
+            <div class="payment-methods">
+                <div class="methods-title">Select Payment Method</div>
+                <button class="method-button active" onclick="selectMethod(event, 'phonepe')">
+                    <span class="method-icon">📱</span>
+                    PhonePe (Recommended)
+                </button>
+                <button class="method-button" onclick="selectMethod(event, 'upi')">
+                    <span class="method-icon">💰</span>
+                    Other UPI Apps
+                </button>
+                <button class="method-button" onclick="selectMethod(event, 'card')">
+                    <span class="method-icon">💳</span>
+                    Credit/Debit Card
+                </button>
+            </div>
+
+            <!-- Credit Card Form -->
+            <div class="card-form" id="cardForm" style="display: none;">
+                <div class="form-group">
+                    <label for="cardNumber">Card Number</label>
+                    <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="expiryDate">Expiry Date</label>
+                        <input type="text" id="expiryDate" placeholder="MM/YY" maxlength="5">
+                    </div>
+                    <div class="form-group">
+                        <label for="cvv">CVV</label>
+                        <input type="text" id="cvv" placeholder="123" maxlength="3">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="cardName">Cardholder Name</label>
+                    <input type="text" id="cardName" placeholder="John Doe">
+                </div>
+            </div>
+
+            <!-- PhonePe Payment Button -->
+            <button class="phonepe-btn" onclick="initiatePayment()">
+                <span class="phonepe-icon">📱</span>
+                Pay with PhonePe - ₹100
+            </button>
+
+            <!-- Cancel Button -->
+            <button class="cancel-btn" onclick="backToConfirmation()">← Back to Confirmation</button>
+
+            <!-- Security Badge -->
+            <div class="security-badge">
+                <span class="security-icon">🔒</span>
+                Secure Payment Gateway
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="modal-icon">✅</div>
+            <div class="modal-title">Payment Successful!</div>
+            <div class="modal-message">Your registration fee has been paid. You can now login to your account.</div>
+            <button class="modal-btn" onclick="redirectToLogin()">Continue to Login</button>
+        </div>
+    </div>
+
+    <!-- Processing Modal -->
+    <div class="modal" id="processingModal">
+        <div class="modal-content">
+            <div class="modal-icon">⏳</div>
+            <div class="modal-title">Processing Payment...</div>
+            <div class="modal-message">Please wait while we process your payment.</div>
+        </div>
+    </div>
+
+    <script>
+        // ===== PAGE INITIALIZATION =====
+        window.addEventListener('load', () => {
+            loadUserData();
+            setupEventListeners();
+            animatePageLoad();
+            generateOrderId();
+        });
+
+        function generateOrderId() {
+            const orderId = 'BS' + Date.now().toString().slice(-8);
+            setStoredValue('orderId', orderId);
+            document.getElementById('orderId').textContent = orderId;
+        }
+
+        function getStoredValue(key, fallback = null) {
+            const storage = typeof BSIAuthStorage !== 'undefined' ? BSIAuthStorage : localStorage;
+            const value = storage.getItem(key);
+            return value === null || value === undefined || value === '' ? fallback : value;
+        }
+
+        function setStoredValue(key, value) {
+            const storage = typeof BSIAuthStorage !== 'undefined' ? BSIAuthStorage : localStorage;
+            storage.setItem(key, value);
+        }
+
+        function loadUserData() {
+            const userName = getStoredValue('userName', '-');
+            const userEmail = getStoredValue('userEmail', '-');
+            const userMobile = getStoredValue('userPhone', getStoredValue('userMobile', '-'));
+            
+            // Confirmation step
+            document.getElementById('confStudentName').textContent = userName;
+            document.getElementById('confEmailId').textContent = userEmail;
+            document.getElementById('confMobileNo').textContent = userMobile;
+            
+            // Payment step
+            document.getElementById('displayName').textContent = userName;
+            document.getElementById('displayEmail').textContent = userEmail;
+        }
+
+        function setupEventListeners() {
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    const confirmStep = document.getElementById('confirmationStep');
+                    const paymentStep = document.getElementById('paymentStep');
+                    
+                    if (paymentStep.style.display !== 'none') {
+                        backToConfirmation();
+                    } else if (confirmStep.style.display !== 'none') {
+                        goBack();
+                    }
+                }
+            });
+
+            // Card input formatting
+            const cardNumber = document.getElementById('cardNumber');
+            const expiryDate = document.getElementById('expiryDate');
+
+            if (cardNumber) {
+                cardNumber.addEventListener('input', (e) => {
+                    let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+                    let formatted = value.match(/.{1,4}/g)?.join(' ') || value;
+                    e.target.value = formatted.substring(0, 19);
+                });
+            }
+
+            if (expiryDate) {
+                expiryDate.addEventListener('input', (e) => {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length >= 2) {
+                        value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                    }
+                    e.target.value = value.substring(0, 5);
+                });
+            }
+        }
+
+        function animatePageLoad() {
+            const container = document.querySelector('.payment-container');
+            if (container) {
+                container.style.animation = 'slideIn 0.5s ease-out';
+            }
+        }
+
+        // ===== TWO-STEP FLOW FUNCTIONS =====
+        function proceedToPayment() {
+            const confirmationStep = document.getElementById('confirmationStep');
+            const paymentStep = document.getElementById('paymentStep');
+            
+            confirmationStep.style.display = 'none';
+            paymentStep.style.display = 'block';
+            
+            // Animate transition
+            paymentStep.style.animation = 'slideIn 0.5s ease-out';
+            
+            console.log('✓ Proceeding to payment');
+        }
+
+        function backToConfirmation() {
+            const confirmationStep = document.getElementById('confirmationStep');
+            const paymentStep = document.getElementById('paymentStep');
+            
+            paymentStep.style.display = 'none';
+            confirmationStep.style.display = 'block';
+            
+            confirmationStep.style.animation = 'slideIn 0.5s ease-out';
+            
+            console.log('← Back to confirmation');
+        }
+
+        function goBack() {
+            if (confirm('Go back to registration? Your data will be saved.')) {
+                window.location.href = 'register.html';
+            }
+        }
+
+        // ===== PAYMENT METHOD SELECTION =====
+        function selectMethod(event, method) {
+            event.preventDefault();
+            
+            document.querySelectorAll('.method-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            event.currentTarget.classList.add('active');
+            setStoredValue('selectedPaymentMethod', method);
+            
+            // Show/hide card form
+            const cardForm = document.getElementById('cardForm');
+            if (method === 'card') {
+                cardForm.style.display = 'block';
+            } else {
+                cardForm.style.display = 'none';
+            }
+            
+            // Update pay button text
+            const payBtn = document.querySelector('.phonepe-btn');
+            if (method === 'phonepe') {
+                payBtn.innerHTML = '<span class="phonepe-icon">📱</span> Pay with PhonePe - ₹100';
+            } else if (method === 'upi') {
+                payBtn.innerHTML = '<span class="phonepe-icon">💰</span> Pay with UPI - ₹100';
+            } else if (method === 'card') {
+                payBtn.innerHTML = '<span class="phonepe-icon">💳</span> Pay with Card - ₹100';
+            }
+            
+            console.log('✓ Selected payment method:', method);
+        }
+
+        function addRippleEffect(event) {
+            const button = event.currentTarget;
+            const ripple = document.createElement('span');
+            ripple.style.position = 'absolute';
+            ripple.style.background = 'rgba(255, 255, 255, 0.5)';
+            ripple.style.borderRadius = '50%';
+            ripple.style.pointerEvents = 'none';
+            ripple.style.animation = 'ripple 0.6s ease-out';
+        }
+
+        // ===== PAYMENT PROCESSING =====
+        function initiatePayment() {
+            const selectedMethod = getStoredValue('selectedPaymentMethod', 'phonepe');
+            const userName = getStoredValue('userName');
+            const userEmail = getStoredValue('userEmail');
+
+            if (!userName || !userEmail) {
+                alert('Please complete registration first!');
+                return;
+            }
+
+            // Validate card details if card method selected
+            if (selectedMethod === 'card') {
+                if (!validateCardForm()) {
+                    return;
+                }
+            }
+
+            // Disable button to prevent multiple clicks
+            const payBtn = document.querySelector('.phonepe-btn');
+            payBtn.disabled = true;
+
+            // Show processing modal
+            document.getElementById('processingModal').classList.add('show');
+
+            // Simulate payment processing (2 seconds)
+            setTimeout(() => {
+                completePayment();
+            }, 2000);
+        }
+
+        function validateCardForm() {
+            const cardNumber = document.getElementById('cardNumber').value.trim();
+            const expiryDate = document.getElementById('expiryDate').value.trim();
+            const cvv = document.getElementById('cvv').value.trim();
+            const cardName = document.getElementById('cardName').value.trim();
+
+            if (!cardNumber || cardNumber.length < 16) {
+                alert('Please enter a valid card number.');
+                return false;
+            }
+            if (!expiryDate || !/^\d{2}\/\d{2}$/.test(expiryDate)) {
+                alert('Please enter a valid expiry date (MM/YY).');
+                return false;
+            }
+            if (!cvv || cvv.length < 3) {
+                alert('Please enter a valid CVV.');
+                return false;
+            }
+            if (!cardName) {
+                alert('Please enter the cardholder name.');
+                return false;
+            }
+            return true;
+        }
+
+        function completePayment() {
+            const userName = getStoredValue('userName');
+            const selectedMethod = getStoredValue('selectedPaymentMethod', 'phonepe');
+
+            // Mark payment as completed
+            setStoredValue('paymentStatus', 'completed');
+            setStoredValue('paymentDate', new Date().toLocaleString());
+            setStoredValue('paymentAmount', '100');
+            setStoredValue('paymentMethod', selectedMethod);
+            setStoredValue('isRegistrationComplete', 'true');
+            setStoredValue('isLoggedIn', 'true');
+            setStoredValue('registrationDate', new Date().toISOString());
+
+            console.log('✓ Payment completed for:', userName, 'via', selectedMethod);
+
+            // Close processing modal
+            document.getElementById('processingModal').classList.remove('show');
+
+            // Show success modal
+            document.getElementById('successModal').classList.add('show');
+
+            // Auto-redirect after 3 seconds
+            setTimeout(() => {
+                redirectToLogin();
+            }, 3000);
+        }
+
+        function redirectToLogin() {
+            window.location.href = 'login.html';
+        }
+
+        // ===== ANIMATIONS =====
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+            @keyframes slideIn {
+                from {
+                    transform: translateY(20px);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateY(0);
+                    opacity: 1;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

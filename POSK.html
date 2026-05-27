@@ -1,0 +1,1777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate of Completion</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            background:
+                radial-gradient(circle at 50% 0%, rgba(202, 142, 69, 0.18), transparent 34%),
+                linear-gradient(180deg, #f3ead8 0%, #e5d5bb 100%);
+            font-family: "Georgia", "Times New Roman", serif;
+            color: #2f281f;
+        }
+
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 14px 20px;
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(69, 42, 15, 0.08);
+        }
+
+        .top-nav-title {
+            font-size: 1.35em;
+            font-weight: bold;
+            color: #b15c1d;
+            letter-spacing: 0.04em;
+        }
+
+        .top-nav-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .top-nav button {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95em;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .print-btn {
+            background: #11836d;
+            color: white;
+        }
+
+        .back-btn {
+            background: #d04d3d;
+            color: white;
+        }
+
+        .top-nav button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        .certificate-container {
+            display: flex;
+            justify-content: center;
+            overflow-x: auto;
+            padding-bottom: 20px;
+        }
+
+        .certificate {
+            position: relative;
+            width: min(100%, 794px);
+            aspect-ratio: 210 / 297;
+            min-height: 0;
+            padding: 20px;
+            background:
+                radial-gradient(circle at 50% 50%, rgba(18, 111, 128, 0.08) 0 16%, transparent 17%),
+                radial-gradient(circle at 50% 50%, transparent 0 25%, rgba(168, 79, 18, 0.045) 26% 27%, transparent 28%),
+                radial-gradient(circle at 16% 14%, rgba(255, 255, 255, 0.88), transparent 24%),
+                radial-gradient(circle at 84% 86%, rgba(200, 151, 75, 0.18), transparent 28%),
+                repeating-linear-gradient(135deg, rgba(18, 111, 128, 0.035) 0 1px, transparent 1px 13px),
+                repeating-linear-gradient(45deg, rgba(168, 79, 18, 0.028) 0 1px, transparent 1px 16px),
+                linear-gradient(180deg, #fffdf5 0%, #fbf2df 52%, #f1e4cb 100%);
+            border: 10px solid #a84f12;
+            box-shadow: 0 26px 72px rgba(63, 38, 14, 0.24);
+            overflow: hidden;
+        }
+
+        .certificate::before {
+            content: "";
+            position: absolute;
+            inset: 16px;
+            border: 2px solid rgba(18, 111, 128, 0.76);
+            box-shadow: inset 0 0 0 5px rgba(200, 151, 75, 0.18);
+            pointer-events: none;
+        }
+
+        .certificate::after {
+            content: "BIHAR SKILL INTERN";
+            position: absolute;
+            left: 50%;
+            top: 49%;
+            transform: translate(-50%, -50%);
+            font-family: Arial, Helvetica, sans-serif;
+            width: 430px;
+            height: 430px;
+            border: 3px double rgba(168, 79, 18, 0.08);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 34px;
+            text-align: center;
+            font-size: 3.2em;
+            line-height: 1.1;
+            font-weight: 900;
+            letter-spacing: 0.16em;
+            color: rgba(168, 79, 18, 0.045);
+            pointer-events: none;
+        }
+
+        .cert-inner::before {
+            content: "";
+            position: absolute;
+            inset: 34px;
+            border-radius: 10px;
+            background:
+                linear-gradient(90deg, transparent, rgba(18, 111, 128, 0.08), transparent) top / 100% 1px no-repeat,
+                linear-gradient(90deg, transparent, rgba(18, 111, 128, 0.08), transparent) bottom / 100% 1px no-repeat,
+                linear-gradient(180deg, transparent, rgba(18, 111, 128, 0.08), transparent) left / 1px 100% no-repeat,
+                linear-gradient(180deg, transparent, rgba(18, 111, 128, 0.08), transparent) right / 1px 100% no-repeat;
+            pointer-events: none;
+        }
+
+        .cert-inner {
+            position: relative;
+            z-index: 1;
+            height: 100%;
+            min-height: 0;
+            padding: 24px 42px 22px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ornament {
+            position: absolute;
+            width: 76px;
+            height: 76px;
+            color: #177d8f;
+            font-size: 2em;
+            line-height: 0.8;
+            opacity: 0.9;
+            user-select: none;
+        }
+
+        .top-left {
+            top: 18px;
+            left: 18px;
+        }
+
+        .top-right {
+            top: 18px;
+            right: 18px;
+            text-align: right;
+            transform: scaleX(-1);
+        }
+
+        .bottom-left {
+            bottom: 18px;
+            left: 18px;
+            transform: scaleY(-1);
+        }
+
+        .bottom-right {
+            bottom: 18px;
+            right: 18px;
+            text-align: right;
+            transform: scale(-1);
+        }
+
+        .cert-header {
+            text-align: center;
+            margin-bottom: 13px;
+        }
+
+        .cert-brand-logo {
+            display: block;
+            width: 92px;
+            max-height: 92px;
+            object-fit: contain;
+            margin: 0 auto 9px;
+            filter: drop-shadow(0 5px 7px rgba(68, 42, 18, 0.1));
+        }
+
+        .org-name {
+            font-size: 0.86em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.34em;
+            color: #9b4710;
+            margin-bottom: 5px;
+        }
+
+        .org-info {
+            max-width: 620px;
+            margin: 0 auto;
+            color: #594c3d;
+            font-size: 0.66em;
+            line-height: 1.35;
+        }
+
+        .cert-id-label {
+            margin-top: 7px;
+            font-size: 0.64em;
+            color: #7d6a56;
+            letter-spacing: 0.05em;
+        }
+
+        .cert-title {
+            position: relative;
+            text-align: center;
+            margin: 8px 0 15px;
+        }
+
+        .cert-title::before,
+        .cert-title::after {
+            content: "";
+            display: block;
+            width: 210px;
+            height: 1px;
+            margin: 0 auto 8px;
+            background: linear-gradient(90deg, transparent, rgba(18, 111, 128, 0.7), transparent);
+        }
+
+        .cert-title::after {
+            margin: 8px auto 0;
+            width: 160px;
+            background: linear-gradient(90deg, transparent, rgba(168, 79, 18, 0.62), transparent);
+        }
+
+        .small-title {
+            font-size: 1.02em;
+            font-weight: bold;
+            letter-spacing: 0.34em;
+            text-transform: uppercase;
+            color: #16120e;
+        }
+
+        .script-title {
+            margin: 4px 0 3px;
+            font-family: "Brush Script MT", "Lucida Handwriting", cursive;
+            font-size: 3.45em;
+            line-height: 0.95;
+            color: #b85a17;
+            font-weight: 500;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+        }
+
+        .sub-title {
+            font-size: 0.78em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            color: #9d5218;
+        }
+
+        .cert-body {
+            flex: 1;
+            text-align: center;
+        }
+
+        .cert-intro {
+            max-width: 720px;
+            margin: 0 auto 11px;
+            font-size: 0.82em;
+            line-height: 1.5;
+        }
+
+        .student-info {
+            margin: 10px 0 12px;
+        }
+
+        .student-name-label {
+            margin-bottom: 6px;
+            font-size: 0.7em;
+            color: #7a6857;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .student-name {
+            min-height: 42px;
+            padding: 0 10px 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.05em;
+            font-weight: bold;
+            color: #a94f14;
+            border-bottom: 2px solid rgba(18, 111, 128, 0.85);
+            text-shadow: 0 1px 0 #fff;
+        }
+
+        .cert-text {
+            font-size: 0.78em;
+            line-height: 1.45;
+            margin: 3px 0;
+        }
+
+        .details-card {
+            margin: 15px 0 12px;
+            padding: 12px 12px 10px;
+            background: rgba(255, 253, 247, 0.52);
+            border-top: 1px solid rgba(18, 111, 128, 0.4);
+            border-bottom: 1px solid rgba(18, 111, 128, 0.4);
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 9px 22px;
+            text-align: left;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+        }
+
+        .info-label {
+            min-width: 106px;
+            font-style: italic;
+            font-weight: bold;
+            color: #a14b12;
+            font-size: 0.7em;
+        }
+
+        .info-value {
+            flex: 1;
+            min-height: 20px;
+            padding: 0 2px 4px;
+            border-bottom: 2px solid rgba(18, 111, 128, 0.85);
+            color: #203d45;
+            font-size: 0.74em;
+            font-weight: 600;
+        }
+
+        .grade-badge {
+            width: 138px;
+            margin: 12px auto 9px;
+            padding: 10px 10px;
+            border-radius: 11px;
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.16), transparent 42%),
+                linear-gradient(180deg, #c9772d 0%, #9e4310 100%);
+            border: 1px solid rgba(255, 224, 171, 0.58);
+            color: white;
+            box-shadow: 0 12px 26px rgba(128, 67, 19, 0.24);
+        }
+
+        .grade-label {
+            font-size: 0.58em;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .grade-value {
+            margin: 4px 0;
+            font-size: 1.9em;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .cert-message {
+            max-width: 720px;
+            margin: 0 auto;
+            font-size: 0.72em;
+            line-height: 1.38;
+            color: #4f4336;
+            font-style: italic;
+        }
+
+        .footer-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 72px;
+            margin-top: 16px;
+            align-items: end;
+        }
+
+        .iso-footer-logo {
+            display: block;
+            width: 92px;
+            max-height: 92px;
+            object-fit: contain;
+            margin: 10px auto 0;
+            opacity: 0.94;
+            mix-blend-mode: multiply;
+            filter: contrast(1.08) saturate(1.12);
+        }
+
+        .official-iso-stamp {
+            display: block;
+            width: 126px;
+            height: 126px;
+            object-fit: contain;
+            margin: -6px auto 8px;
+            opacity: 0.94;
+            mix-blend-mode: multiply;
+            filter: contrast(1.08) saturate(1.16);
+        }
+
+        .signature-iso-stamp {
+            display: block;
+            width: 96px;
+            height: 96px;
+            object-fit: contain;
+            margin: -4px auto -8px;
+            opacity: 0.92;
+            filter: contrast(1.08) saturate(1.14);
+        }
+
+        .signature-block,
+        .qr-block,
+        .seal-block {
+            text-align: center;
+        }
+
+        .signature-block {
+            justify-self: start;
+            width: 330px;
+            padding-left: 12px;
+        }
+
+        .signature-art {
+            position: relative;
+            width: 330px;
+            height: 136px;
+            margin: 0 auto -2px;
+        }
+
+        .signature-mohar {
+            position: absolute;
+            right: 8px;
+            bottom: 0;
+            width: 78px;
+            height: 78px;
+            object-fit: contain;
+            opacity: 0.9;
+            filter: contrast(1.08) saturate(1.05);
+        }
+
+        .qr-block {
+            justify-self: end;
+            width: 260px;
+            z-index: 4;
+        }
+
+        .qr-frame {
+            position: relative;
+            width: 112px;
+            height: 112px;
+            margin: 0 auto 8px;
+            padding: 4px;
+            background: #fff;
+            border: 0;
+        }
+
+        .qr-code-image {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .qr-fallback {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #111;
+            color: #111;
+            background: #fff;
+            font-size: 0.52em;
+            font-weight: bold;
+            line-height: 1.25;
+            text-align: center;
+            padding: 6px;
+        }
+
+        .qr-logo {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 28px;
+            height: 28px;
+            padding: 2px;
+            transform: translate(-50%, -50%);
+            object-fit: contain;
+            background: #fff;
+            border-radius: 50%;
+            border: 1px solid rgba(18, 111, 128, 0.45);
+        }
+
+        .qr-caption {
+            color: #9d4710;
+            font-weight: bold;
+            font-size: 0.62em;
+            margin-bottom: 2px;
+        }
+
+        .qr-id {
+            color: #5f5142;
+            font-size: 0.52em;
+            line-height: 1.25;
+            word-break: break-word;
+        }
+
+        .qr-block .sig-line {
+            width: 100%;
+            height: 0;
+            margin: 6px auto 4px;
+        }
+
+        .qr-issue-meta {
+            font-size: 0;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .signature-image {
+            display: block;
+            width: 326px;
+            height: 128px;
+            object-fit: contain;
+            margin: 0 auto;
+            filter: saturate(1.06) contrast(1.08);
+        }
+
+        .signature-block .sig-line {
+            display: none;
+        }
+
+        .sig-line {
+            height: 26px;
+            margin-bottom: 6px;
+            border-top: 2px solid rgba(18, 111, 128, 0.85);
+        }
+
+        .sig-title {
+            color: #9d4710;
+            font-weight: bold;
+            font-size: 0.72em;
+            margin-bottom: 3px;
+        }
+
+        .sig-subtitle {
+            color: #5f5142;
+            font-size: 0.64em;
+        }
+
+        .sig-meta {
+            margin-top: 8px;
+            font-size: 0.58em;
+            line-height: 1.35;
+            color: #5a4c3f;
+        }
+
+        .issue-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            align-items: center;
+            font-size: 0.64em;
+            color: #4e4336;
+        }
+
+        .issue-meta strong {
+            color: #a45117;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .top-nav {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .certificate {
+                padding: 11px;
+                min-height: 0;
+            }
+
+            .cert-inner {
+                padding: 20px 18px 16px;
+                min-height: 0;
+            }
+
+            .small-title {
+                font-size: 1em;
+                letter-spacing: 0.18em;
+            }
+
+            .script-title {
+                font-size: 2.8em;
+            }
+
+            .student-name {
+                font-size: clamp(1.05em, 5.1vw, 1.7em);
+            }
+
+            .detail-grid,
+            .footer-section {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .detail-grid {
+                gap: 6px 8px;
+            }
+
+            .detail-item {
+                gap: 4px;
+            }
+
+            .info-label {
+                min-width: 56px;
+                font-size: 0.48em;
+            }
+
+            .info-value {
+                min-height: 14px;
+                font-size: 0.5em;
+                border-bottom-width: 1px;
+            }
+
+            .footer-section {
+                gap: 18px;
+            }
+
+            .cert-inner {
+                width: 734px;
+                height: 1063px;
+                padding: 24px 42px 22px;
+                transform: scale(var(--mobile-cert-scale, 1));
+                transform-origin: top left;
+            }
+
+            .ornament {
+                width: 76px;
+                height: 76px;
+                font-size: 2.15em;
+            }
+
+            .cert-brand-logo {
+                width: 86px;
+                max-height: 86px;
+            }
+
+            .org-name {
+                font-size: 0.82em;
+            }
+
+            .org-info {
+                font-size: 0.66em;
+            }
+
+            .cert-id-label {
+                font-size: 0.64em;
+            }
+
+            .small-title {
+                font-size: 1.02em;
+                letter-spacing: 0.28em;
+            }
+
+            .script-title {
+                font-size: 3.25em;
+            }
+
+            .sub-title {
+                font-size: 0.78em;
+            }
+
+            .cert-intro {
+                font-size: 0.82em;
+            }
+
+            .student-name-label {
+                font-size: 0.7em;
+            }
+
+            .student-name {
+                font-size: 2.05em;
+            }
+
+            .cert-text {
+                font-size: 0.78em;
+            }
+
+            .detail-grid {
+                gap: 9px 22px;
+            }
+
+            .detail-item {
+                gap: 10px;
+            }
+
+            .info-label {
+                min-width: 106px;
+                font-size: 0.7em;
+            }
+
+            .info-value {
+                min-height: 20px;
+                font-size: 0.74em;
+                border-bottom-width: 2px;
+            }
+
+            .footer-section {
+                gap: 42px;
+            }
+        }
+
+        @media print {
+            html,
+            body {
+                width: 210mm;
+                height: 297mm;
+                padding: 0;
+                margin: 0;
+                background: white;
+                overflow: hidden;
+            }
+
+            .top-nav {
+                display: none;
+            }
+
+            .certificate-container {
+                width: 210mm;
+                height: 297mm;
+                display: block;
+                overflow: hidden;
+            }
+
+            .certificate {
+                width: 210mm;
+                height: 297mm;
+                min-height: 0;
+                max-width: none;
+                padding: 7mm;
+                margin: 0;
+                border: 3.2mm solid #b85e1a;
+                box-shadow: none;
+                overflow: hidden;
+                page-break-after: avoid;
+                break-after: avoid;
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+            }
+
+            .certificate::before {
+                inset: 5.2mm;
+                border-width: 0.55mm;
+            }
+
+            .cert-inner {
+                height: 100%;
+                min-height: 0;
+                padding: 8mm 13mm 7mm;
+                overflow: hidden;
+            }
+
+            .ornament {
+                width: 22mm;
+                height: 22mm;
+                font-size: 22pt;
+                opacity: 0.82;
+            }
+
+            .top-left,
+            .top-right {
+                top: 4mm;
+            }
+
+            .top-left,
+            .bottom-left {
+                left: 4mm;
+            }
+
+            .top-right,
+            .bottom-right {
+                right: 4mm;
+            }
+
+            .bottom-left,
+            .bottom-right {
+                bottom: 4mm;
+            }
+
+            .cert-header {
+                margin-bottom: 4mm;
+            }
+
+            .cert-brand-logo {
+                width: 28mm;
+                max-height: 28mm;
+                margin-bottom: 2mm;
+            }
+
+            .org-name {
+                font-size: 9pt;
+                margin-bottom: 1.8mm;
+                letter-spacing: 0.38em;
+            }
+
+            .org-info {
+                font-size: 7pt;
+                line-height: 1.35;
+            }
+
+            .cert-id-label {
+                margin-top: 2.4mm;
+                font-size: 7pt;
+            }
+
+            .cert-title {
+                margin: 1.5mm 0 5mm;
+            }
+
+            .small-title {
+                font-size: 13pt;
+                letter-spacing: 0.32em;
+            }
+
+            .script-title {
+                margin: 1.5mm 0 1mm;
+                font-size: 40pt;
+            }
+
+            .sub-title {
+                font-size: 9.2pt;
+                letter-spacing: 0.24em;
+            }
+
+            .cert-intro {
+                max-width: 145mm;
+                margin-bottom: 4mm;
+                font-size: 9pt;
+                line-height: 1.45;
+            }
+
+            .student-info {
+                margin: 4mm 0 4.5mm;
+            }
+
+            .student-name-label {
+                margin-bottom: 1.8mm;
+                font-size: 7.5pt;
+            }
+
+            .student-name {
+                min-height: 15mm;
+                padding-bottom: 2.3mm;
+                font-size: 28pt;
+            }
+
+            .cert-text {
+                font-size: 8.8pt;
+                line-height: 1.42;
+                margin: 2mm 0;
+            }
+
+            .details-card {
+                margin: 5mm 0 4mm;
+                padding: 4mm 3mm;
+            }
+
+            .detail-grid {
+                gap: 2.6mm 7mm;
+            }
+
+            .info-label {
+                min-width: 31mm;
+                font-size: 7.7pt;
+            }
+
+            .info-value {
+                min-height: 6.2mm;
+                padding-bottom: 1.2mm;
+                font-size: 8pt;
+                border-bottom-width: 0.5mm;
+            }
+
+            .grade-badge {
+                width: 36mm;
+                margin: 4mm auto 3mm;
+                padding: 4mm 3mm;
+                border-radius: 3mm;
+                box-shadow: 0 4mm 8mm rgba(183, 93, 27, 0.18);
+            }
+
+            .grade-label {
+                font-size: 7pt;
+            }
+
+            .grade-value {
+                margin: 1.2mm 0;
+                font-size: 24pt;
+            }
+
+            .cert-message {
+                max-width: 140mm;
+                font-size: 8.1pt;
+                line-height: 1.38;
+            }
+
+            .footer-section {
+                gap: 20mm;
+                margin-top: 5mm;
+            }
+
+            .signature-block {
+                width: 62mm;
+                padding-left: 0;
+            }
+
+            .signature-art {
+                width: 58mm;
+                height: 23mm;
+            }
+
+            .signature-mohar {
+                width: 19mm;
+                height: 19mm;
+                right: 1mm;
+                bottom: 0;
+            }
+
+            .qr-block {
+                width: 62mm;
+            }
+
+            .qr-frame {
+                width: 25mm;
+                height: 25mm;
+                padding: 1mm;
+                margin-bottom: 1.4mm;
+            }
+
+            .qr-logo {
+                width: 6mm;
+                height: 6mm;
+                padding: 0.6mm;
+            }
+
+            .qr-caption {
+                font-size: 6pt;
+            }
+
+            .qr-id {
+                font-size: 5.2pt;
+            }
+
+            .iso-footer-logo {
+                width: 21mm;
+                max-height: 21mm;
+                margin-top: 3mm;
+            }
+
+            .signature-image {
+                width: 50mm;
+                height: 16mm;
+                margin: -1.5mm auto 0.4mm;
+            }
+
+            .sig-line {
+                height: 13mm;
+                margin-bottom: 2.2mm;
+                border-top-width: 0.5mm;
+            }
+
+            .sig-title {
+                font-size: 8.1pt;
+                margin-bottom: 1.1mm;
+            }
+
+            .sig-subtitle,
+            .issue-meta {
+                font-size: 7.2pt;
+            }
+
+            .sig-meta {
+                margin-top: 2.2mm;
+                font-size: 6.5pt;
+                line-height: 1.32;
+            }
+
+            .issue-meta {
+                gap: 1.5mm;
+            }
+
+            @page {
+                size: A4;
+                margin: 0;
+            }
+        }
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        @media print {
+            html,
+            body {
+                width: 210mm !important;
+                height: 297mm !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                background: #fff !important;
+                overflow: hidden !important;
+            }
+
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+            }
+
+            .top-nav,
+            .print-btn,
+            .back-btn {
+                display: none !important;
+            }
+
+            .certificate-container,
+            .certificate {
+                width: 210mm !important;
+                height: 297mm !important;
+                max-width: 210mm !important;
+                min-height: 0 !important;
+                margin: 0 !important;
+                box-shadow: none !important;
+                overflow: hidden !important;
+                page-break-after: avoid !important;
+                break-after: avoid !important;
+            }
+
+            .certificate {
+                padding: 5mm !important;
+                border-width: 2.6mm !important;
+            }
+
+            .certificate::before {
+                inset: 4.5mm !important;
+            }
+
+            .cert-inner {
+                height: 100% !important;
+                min-height: 0 !important;
+                padding: 9mm 13mm 10mm !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: space-between !important;
+                overflow: hidden !important;
+            }
+
+            .cert-header {
+                margin-bottom: 5mm !important;
+            }
+
+            .cert-brand-logo {
+                width: 34mm !important;
+                max-height: 34mm !important;
+                margin-bottom: 3mm !important;
+            }
+
+            .org-name {
+                font-size: 11pt !important;
+                margin-bottom: 2.2mm !important;
+            }
+
+            .org-info,
+            .cert-id-label {
+                font-size: 8.4pt !important;
+            }
+
+            .cert-title {
+                margin: 2mm 0 6mm !important;
+            }
+
+            .small-title {
+                font-size: 15pt !important;
+            }
+
+            .script-title {
+                font-size: 50pt !important;
+                margin: 1mm 0 !important;
+            }
+
+            .sub-title {
+                font-size: 10.5pt !important;
+            }
+
+            .cert-body {
+                flex: 1 1 auto !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+
+            .cert-intro {
+                max-width: 156mm !important;
+                margin-bottom: 5mm !important;
+                font-size: 10.2pt !important;
+            }
+
+            .student-info {
+                margin: 5mm 0 5mm !important;
+            }
+
+            .student-name {
+                min-height: 18mm !important;
+                font-size: 36pt !important;
+                padding-bottom: 3mm !important;
+            }
+
+            .cert-text {
+                max-width: 158mm !important;
+                font-size: 10pt !important;
+                line-height: 1.45 !important;
+                margin: 3mm auto !important;
+            }
+
+            .details-card {
+                width: 158mm !important;
+                margin: 6mm 0 5mm !important;
+                padding: 5mm 4mm !important;
+            }
+
+            .info-label {
+                font-size: 8.8pt !important;
+            }
+
+            .info-value {
+                font-size: 9.1pt !important;
+            }
+
+            .grade-badge {
+                width: 43mm !important;
+                margin: 5mm auto 4mm !important;
+                padding: 5mm 4mm !important;
+            }
+
+            .grade-value {
+                font-size: 30pt !important;
+            }
+
+            .cert-message {
+                max-width: 154mm !important;
+                font-size: 9.2pt !important;
+            }
+
+            .footer-section {
+                margin-top: 6mm !important;
+                gap: 28mm !important;
+            }
+
+            .signature-block {
+                width: 66mm !important;
+            }
+
+            .signature-art {
+                width: 62mm !important;
+                height: 25mm !important;
+            }
+
+            .signature-mohar {
+                width: 21mm !important;
+                height: 21mm !important;
+            }
+
+            .qr-block {
+                width: 66mm !important;
+            }
+
+            .qr-frame {
+                width: 27mm !important;
+                height: 27mm !important;
+                padding: 1mm !important;
+            }
+
+            .qr-logo {
+                width: 7mm !important;
+                height: 7mm !important;
+            }
+
+            .signature-iso-stamp {
+                width: 24mm !important;
+                height: 24mm !important;
+                margin: -2mm auto -2mm !important;
+            }
+
+            .signature-image {
+                width: 62mm !important;
+                height: 24mm !important;
+            }
+
+            .sig-title {
+                font-size: 9pt !important;
+            }
+
+            .sig-subtitle,
+            .issue-meta {
+                font-size: 8pt !important;
+            }
+        }
+
+        @page {
+            size: A4 portrait;
+            margin: 6mm;
+        }
+
+        @media print {
+            html,
+            body {
+                width: auto !important;
+                height: auto !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                background: #fff !important;
+                overflow: visible !important;
+            }
+
+            .certificate-container {
+                width: 198mm !important;
+                height: 285mm !important;
+                max-width: 198mm !important;
+                margin: 0 auto !important;
+                padding: 0 !important;
+                display: block !important;
+                overflow: hidden !important;
+            }
+
+            .certificate {
+                width: 198mm !important;
+                height: 285mm !important;
+                max-width: 198mm !important;
+                margin: 0 auto !important;
+                padding: 4mm !important;
+                border-width: 2.4mm !important;
+                overflow: hidden !important;
+                box-shadow: none !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+            }
+
+            .certificate::before {
+                inset: 3.6mm !important;
+            }
+
+            .cert-inner {
+                height: 100% !important;
+                padding: 6mm 11mm 6mm !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: space-between !important;
+                overflow: hidden !important;
+            }
+
+            .cert-header {
+                margin-bottom: 2.5mm !important;
+            }
+
+            .cert-brand-logo {
+                width: 24mm !important;
+                max-height: 24mm !important;
+                margin-bottom: 1.5mm !important;
+            }
+
+            .org-name {
+                font-size: 8.2pt !important;
+                margin-bottom: 1mm !important;
+                letter-spacing: 0.32em !important;
+            }
+
+            .org-info,
+            .cert-id-label {
+                font-size: 6.4pt !important;
+                line-height: 1.25 !important;
+            }
+
+            .cert-id-label {
+                margin-top: 1.3mm !important;
+            }
+
+            .cert-title {
+                margin: 1mm 0 3mm !important;
+            }
+
+            .small-title {
+                font-size: 11.5pt !important;
+            }
+
+            .script-title {
+                font-size: 34pt !important;
+                margin: 0.5mm 0 !important;
+            }
+
+            .sub-title {
+                font-size: 8.1pt !important;
+            }
+
+            .cert-body {
+                flex: 1 1 auto !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: center !important;
+                min-height: 0 !important;
+            }
+
+            .cert-intro {
+                max-width: 144mm !important;
+                margin-bottom: 2.8mm !important;
+                font-size: 8pt !important;
+                line-height: 1.33 !important;
+            }
+
+            .student-info {
+                margin: 3mm 0 !important;
+            }
+
+            .student-name-label {
+                margin-bottom: 1mm !important;
+                font-size: 6.6pt !important;
+            }
+
+            .student-name {
+                min-height: 12mm !important;
+                font-size: 24pt !important;
+                padding-bottom: 1.6mm !important;
+            }
+
+            .cert-text {
+                max-width: 146mm !important;
+                font-size: 7.7pt !important;
+                line-height: 1.3 !important;
+                margin: 1.6mm auto !important;
+            }
+
+            .details-card {
+                width: 144mm !important;
+                margin: 3mm 0 !important;
+                padding: 3mm 3mm !important;
+            }
+
+            .detail-grid {
+                gap: 1.8mm 5mm !important;
+            }
+
+            .info-label {
+                min-width: 28mm !important;
+                font-size: 6.8pt !important;
+            }
+
+            .info-value {
+                min-height: 5mm !important;
+                padding-bottom: 0.8mm !important;
+                font-size: 7.2pt !important;
+            }
+
+            .grade-badge {
+                width: 30mm !important;
+                margin: 2.6mm auto 2mm !important;
+                padding: 3mm 2mm !important;
+            }
+
+            .grade-label {
+                font-size: 6pt !important;
+            }
+
+            .grade-value {
+                font-size: 20pt !important;
+                margin: 0.8mm 0 !important;
+            }
+
+            .cert-message {
+                max-width: 146mm !important;
+                font-size: 7.3pt !important;
+                line-height: 1.28 !important;
+            }
+
+            .footer-section {
+                flex: 0 0 auto !important;
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 18mm !important;
+                margin-top: 3mm !important;
+                align-items: end !important;
+            }
+
+            .signature-block,
+            .qr-block {
+                width: 58mm !important;
+            }
+
+            .signature-art {
+                width: 58mm !important;
+                height: 24mm !important;
+            }
+
+            .signature-image {
+                width: 58mm !important;
+                height: 23mm !important;
+                margin: 0 auto !important;
+            }
+
+            .qr-frame {
+                width: 24mm !important;
+                height: 24mm !important;
+                margin-bottom: 1mm !important;
+            }
+
+            .qr-logo {
+                width: 6mm !important;
+                height: 6mm !important;
+            }
+
+            .qr-caption {
+                font-size: 5.8pt !important;
+            }
+
+            .qr-id {
+                font-size: 5pt !important;
+            }
+
+            .sig-title {
+                font-size: 7.6pt !important;
+            }
+
+            .sig-subtitle,
+            .sig-meta,
+            .qr-issue-meta {
+                font-size: 6.4pt !important;
+                line-height: 1.22 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-nav">
+        <div class="top-nav-title">Certificate</div>
+        <div class="top-nav-actions">
+            <button class="print-btn" onclick="printCertificateA4()">Print</button>
+            <button class="back-btn" onclick="window.location.href='courses.html'">Back</button>
+        </div>
+    </div>
+
+    <div class="certificate-container">
+        <div class="certificate">
+            <div class="cert-inner">
+                <div class="ornament top-left">&#10086;</div>
+                <div class="ornament top-right">&#10086;</div>
+                <div class="ornament bottom-left">&#10086;</div>
+                <div class="ornament bottom-right">&#10086;</div>
+
+                <div class="cert-header">
+                    <img class="cert-brand-logo" src="assets/certificates/bihar-skill-intern-logo.png" alt="Bihar Skill Interns logo">
+                    <div class="org-name">Bihar Skill Intern</div>
+                    <div class="org-info">
+                        Professional Internship and Skill Development Certification Portal
+                    </div>
+                    <div class="cert-id-label">Verification ID: <span id="certID">BSI-2026-001</span></div>
+                </div>
+
+                <div class="cert-title">
+                    <div class="small-title">Certificate</div>
+                    <div class="script-title">of Completion</div>
+                    <div class="sub-title">For Internship Achievement</div>
+                </div>
+
+                <div class="cert-body">
+                    <div class="cert-intro">
+                        This certificate confirms that the candidate named below has successfully completed the assigned internship training and demonstrated satisfactory academic and practical performance.
+                    </div>
+
+                    <div class="student-info">
+                        <div class="student-name-label">Awarded To</div>
+                        <div class="student-name" id="certName">STUDENT NAME</div>
+                    </div>
+
+                    <div class="cert-text">
+                        This is to acknowledge completion of internship work in <strong id="certDomain">Completed Course</strong> under Bihar Skill Intern, associated with Veer Kunwar Singh University.
+                    </div>
+
+                    <div class="details-card">
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <div class="info-label">Course Title:</div>
+                                <div class="info-value" id="certCourse">Completed Course</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="info-label">Roll Number:</div>
+                                <div class="info-value" id="certRoll">N/A</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="info-label">Academic Session:</div>
+                                <div class="info-value" id="certSession">2025-26</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="info-label">Duration:</div>
+                                <div class="info-value"><span id="certDays">15</span> days / <span id="certHours">120</span> hours</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="info-label">Start Date:</div>
+                                <div class="info-value" id="certStartDate">01 Dec 2025</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="info-label">End Date:</div>
+                                <div class="info-value" id="certEndDate">15 Dec 2025</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cert-text">
+                        During the internship period, the intern demonstrated sincerity, discipline, and dedication toward assigned tasks and maintained strong participation throughout the training cycle.
+                    </div>
+
+                    <div class="grade-badge">
+                        <div class="grade-label">Grade</div>
+                        <div class="grade-value" id="gradeValue"></div>
+                        <div class="grade-label" id="gradeLabel"></div>
+                    </div>
+
+                    <div class="cert-message">
+                        This certificate is issued in recognition of successful completion and may be used as an official record of internship achievement.
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <div class="signature-block">
+                        <div class="signature-art">
+                            <img class="signature-image" src="assets/certificates/authorized-signature-stamp.png" alt="Authorized signature and stamp">
+                        </div>
+                        <div class="sig-line"></div>
+                        <div class="sig-title">Authorized Signatory</div>
+                        <div class="sig-subtitle">Bihar Skill Intern</div>
+                        <div class="sig-meta">
+                            <div id="sigName">Director</div>
+                            <div id="sigDesignation">Operations Head</div>
+                            <div id="sigOrg">Bihar Skill Intern</div>
+                        </div>
+                    </div>
+                    <div class="qr-block" aria-label="Certificate verification QR">
+                        <div class="qr-frame">
+                            <img id="verificationQR" class="qr-code-image" alt="Certificate verification QR code">
+                            <div id="qrFallback" class="qr-fallback">QR<br>VERIFY</div>
+                            <img class="qr-logo" src="assets/certificates/bihar-skill-intern-logo.png" alt="Bihar Skill Interns logo">
+                        </div>
+                        <div class="qr-caption">Scan to Verify</div>
+                        <div class="qr-id" id="qrVerificationId">Verification ID</div>
+                        <div class="sig-line"></div>
+                        <div class="qr-issue-meta">
+                            <div><strong>Date:</strong> <span id="issueDate">15 Dec 2025</span></div>
+                            <div><strong>Place:</strong> <span id="issuPlace">Patna, Bihar</span></div>
+                            <div><strong>Status:</strong> Verified</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/qrcode-generator.js"></script>
+    <script>
+        function renderVerificationQR(data) {
+            const qrImage = document.getElementById('verificationQR');
+            const qrVerificationId = document.getElementById('qrVerificationId');
+            const qrFallback = document.getElementById('qrFallback');
+            if (!qrImage) return;
+
+            const origin = location.protocol === 'file:' ? 'https://biharskillinterns.in' : location.origin;
+            const verificationUrl = origin + '/verify-certificate.html?id=' + encodeURIComponent(data.certId);
+            const verificationText = [
+                'Bihar Skill Interns Certificate Verification',
+                'Verification ID: ' + data.certId,
+                'Student Name: ' + data.studentName,
+                'Course: ' + data.courseName,
+                'Status: This certificate is verified by Bihar Skill Interns.',
+                'Verify: ' + verificationUrl
+            ].join('\n');
+
+            if (qrVerificationId) {
+                qrVerificationId.textContent = data.certId;
+            }
+
+            try {
+                if (typeof qrcode !== 'function') {
+                    throw new Error('QR library is not loaded');
+                }
+                const qr = qrcode(0, 'M');
+                qr.addData(verificationText);
+                qr.make();
+                qrImage.src = qr.createDataURL(4, 1);
+                qrImage.style.display = 'block';
+                if (qrFallback) qrFallback.style.display = 'none';
+                localStorage.setItem('certificateVerificationText', verificationText);
+                localStorage.setItem('certificateVerificationUrl', verificationUrl);
+            } catch (error) {
+                console.warn('Unable to generate QR code:', error.message);
+                qrImage.alt = verificationText;
+                qrImage.style.display = 'none';
+                if (qrFallback) {
+                    qrFallback.style.display = 'flex';
+                    qrFallback.title = verificationText;
+                }
+            }
+        }
+
+        function getCertificateResult() {
+            const selectedCourseId = localStorage.getItem('selectedCourseId') || sessionStorage.getItem('quizCourseId');
+            const studentId = localStorage.getItem('currentStudentId') || 'current_student';
+            const overrides = JSON.parse(localStorage.getItem('adminCertificateOverrides') || '{}');
+            const ids = new Set();
+            if (selectedCourseId) ids.add(selectedCourseId);
+            Object.keys(localStorage)
+                .filter(key => key.startsWith('courseResult_'))
+                .forEach(key => ids.add(key.replace('courseResult_', '')));
+
+            for (const id of ids) {
+                try {
+                    const result = JSON.parse(localStorage.getItem('courseResult_' + id) || 'null');
+                    const resultCourseId = result && result.courseId ? String(result.courseId) : String(id);
+                    const enrolled = localStorage.getItem('course_' + id) === 'true';
+                    const override = overrides[`${studentId}_${id}`] || 'auto';
+                    if (override === 'blocked') continue;
+                    if (enrolled && result && String(resultCourseId) === String(id) && (override === 'approved' || (result.passed && Number(result.scorePercentage) >= 60))) {
+                        return { ...result, courseId: result.courseId || id };
+                    }
+                } catch (error) {
+                    console.warn('Unable to read certificate result:', error.message);
+                }
+            }
+
+            return null;
+        }
+
+        function resolveCourseName(courseId, result) {
+            if (result && result.courseName) return result.courseName;
+
+            const selectedCourseId = localStorage.getItem('selectedCourseId') || sessionStorage.getItem('quizCourseId');
+            if (String(selectedCourseId) === String(courseId)) {
+                const selectedName = localStorage.getItem('selectedCourseName') || sessionStorage.getItem('selectedCourseName');
+                if (selectedName) return selectedName;
+            }
+
+            try {
+                const courses = JSON.parse(localStorage.getItem('adminCourses') || '[]');
+                const course = courses.find(item => String(item.id || item.courseId) === String(courseId));
+                if (course) return course.name || course.courseName || course.title || 'Completed Course';
+            } catch (error) {
+                console.warn('Unable to resolve course name:', error.message);
+            }
+
+            return 'Completed Course';
+        }
+
+        window.addEventListener('load', () => {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            if (!isLoggedIn || isLoggedIn === 'false') {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const paymentComplete = localStorage.getItem('paymentStatus') === 'completed';
+            const result = getCertificateResult();
+            if (!paymentComplete || !result) {
+                alert('Please complete payment and pass a course before generating your certificate.');
+                window.location.href = !paymentComplete ? 'payment.html' : 'courses.html';
+                return;
+            }
+
+            const studentName = localStorage.getItem('userName') || 'Student';
+            const studentRoll = localStorage.getItem('userRollNo') || 'N/A';
+            const studentSession = localStorage.getItem('userSession') || '2025-26';
+            const selectedCourse = resolveCourseName(result.courseId, result);
+            const courseEmoji = result.courseEmoji || '';
+            const studentGrade = result.grade;
+            localStorage.setItem('courseForCertificate', selectedCourse);
+            localStorage.setItem('studentGrade', studentGrade);
+            localStorage.setItem('certificateNumber', result.certificateNumber || '');
+
+            document.getElementById('certName').textContent = studentName;
+            document.getElementById('certCourse').textContent = selectedCourse;
+            document.getElementById('certRoll').textContent = studentRoll;
+            document.getElementById('certSession').textContent = studentSession;
+            document.getElementById('certDomain').textContent = selectedCourse + (courseEmoji ? ' ' + courseEmoji : '');
+
+            const gradeEl = document.getElementById('gradeValue');
+            const gradeLabelEl = document.getElementById('gradeLabel');
+            gradeEl.textContent = studentGrade;
+
+            const gradeLabels = {
+                'A+': 'Excellent',
+                'A': 'Very Good',
+                'B+': 'Good',
+                'B': 'Satisfactory',
+                'C': 'Average'
+            };
+            gradeLabelEl.textContent = gradeLabels[studentGrade] || 'Excellent';
+
+            const today = new Date();
+            const startDate = new Date(today);
+            startDate.setDate(startDate.getDate() - 15);
+
+            const formatDate = date => {
+                return date.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: '2-digit'
+                });
+            };
+
+            document.getElementById('certStartDate').textContent = formatDate(startDate);
+            document.getElementById('certEndDate').textContent = formatDate(today);
+            document.getElementById('issueDate').textContent = formatDate(today);
+
+            const certId = result.certificateNumber || ('BSI-' + today.getFullYear() + '-' + String(Math.floor(Math.random() * 100000)).padStart(5, '0'));
+            document.getElementById('certID').textContent = certId;
+            renderVerificationQR({
+                certId,
+                studentName,
+                courseName: selectedCourse
+            });
+        });
+
+        function printCertificateA4() {
+            window.print();
+        }
+
+        function scaleCertificatePreview() {
+            const certificate = document.querySelector('.certificate');
+            const inner = document.querySelector('.cert-inner');
+            if (!certificate || !inner) return;
+
+            if (window.matchMedia('(max-width: 768px)').matches) {
+                const availableWidth = certificate.clientWidth - 22;
+                const scale = Math.min(1, availableWidth / 734);
+                certificate.style.setProperty('--mobile-cert-scale', scale.toFixed(4));
+            } else {
+                certificate.style.removeProperty('--mobile-cert-scale');
+            }
+        }
+
+        window.addEventListener('load', scaleCertificatePreview);
+        window.addEventListener('resize', scaleCertificatePreview);
+    </script>
+</body>
+</html>
